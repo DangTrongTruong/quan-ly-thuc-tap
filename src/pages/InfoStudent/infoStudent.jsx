@@ -2,7 +2,7 @@ import { Col, Row, Table } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { bool, object } from "prop-types";
 import React, { useEffect, useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { getBusiness } from "../../features/businessSlice/businessSlice";
 import { getStudentId } from "../../features/StudentSlice/StudentSlice";
 import { getTimeForm } from "../../features/timeDateSlice/timeDateSlice";
@@ -34,6 +34,7 @@ function InfoStudent({
   infoUser,
   listBusiness: { list, total },
   loading,
+  time
 }) {
   const [page, setPage] = useState({
     page: 1,
@@ -44,7 +45,6 @@ function InfoStudent({
   });
   const [dateNow] = useState(Date.now());
   const [value] = useState(4);
-  const { time } = useSelector((state) => state.time.formTime);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTimeForm(value));
@@ -139,6 +139,7 @@ InfoStudent.propTypes = {
   infoUser: object,
   listBusiness: object,
   loading: bool,
+  time: object,
 };
 
 export default connect(
@@ -146,10 +147,12 @@ export default connect(
     students: { studentById },
     auth: { infoUser },
     business: { listBusiness, loading },
+    time: {formTime:{time}}
   }) => ({
     studentById,
     infoUser,
     listBusiness,
     loading,
+    time
   })
 )(InfoStudent);
